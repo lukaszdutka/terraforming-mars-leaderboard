@@ -1,6 +1,6 @@
 package pl.drogaprogramisty.ratings;
 
-import pl.drogaprogramisty.multielo.MultiEloCalculator;
+import pl.drogaprogramisty.multielo.MultiplayerEloPointsCalculator;
 
 import java.util.List;
 import java.util.Map;
@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 public class RatingFacade {
 
-    private final MultiEloCalculator eloCalculator = new MultiEloCalculator();
+    private final MultiplayerEloPointsCalculator eloCalculator = new MultiplayerEloPointsCalculator();
 
     public Map<String, Double> calculateRatings(List<GameResult> gamesResults) {
         Map<String, Double> playerToRating = gamesResults.stream()
@@ -29,7 +29,11 @@ public class RatingFacade {
                     .mapToDouble(result -> playerToRating.get(result.playerName()))
                     .toArray();
 
-            ratings = eloCalculator.newRating(ratings);
+            int[] scores = sortedResults.stream()
+                    .mapToInt(PlayerGameResult::score)
+                    .toArray();
+
+            ratings = eloCalculator.calculateNewRatings(ratings, scores);
 
             for (int i = 0; i < sortedResults.size(); i++) {
                 playerToRating.put(sortedResults.get(i).playerName(), ratings[i]);
