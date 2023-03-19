@@ -1,13 +1,11 @@
 package pl.drogaprogramisty.ratings;
 
-import java.text.NumberFormat;
 import java.util.List;
 import java.util.Map;
 
-public class RatingsPrinter {
+class RatingsPrinter {
 
-
-    public static void print(Map<String, Double> ratings) {
+    static void print(Map<String, Double> ratings) {
         List<Map.Entry<String, Double>> entries = ratings.entrySet().stream()
                 .sorted((a, b) -> (int) (1000 * b.getValue() - 1000 * a.getValue()))
                 .toList();

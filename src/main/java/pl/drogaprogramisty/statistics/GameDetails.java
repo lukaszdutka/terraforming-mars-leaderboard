@@ -7,5 +7,5 @@ public class GameDetails {
     CorporationDraft corporationDraft;
     FirstDraftType firstDraftType;
     DraftType draftType;
-    Map map;
+    Board board;
 }
