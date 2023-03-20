@@ -2,6 +2,7 @@ package pl.drogaprogramisty.ratings.dto;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 import pl.drogaprogramisty.games.dto.GameResultDto;
+import pl.drogaprogramisty.games.dto.PlayerGameResultDto;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -50,4 +51,10 @@ public final class GameResult {
                 "date=" + date + ']';
     }
 
+    public GameResultDto dto() {
+        return new GameResultDto(playerResults.stream()
+                .map(r -> new PlayerGameResultDto(r.playerName(), r.score()))
+                .toList(),
+                date);
+    }
 }

@@ -1,22 +1,21 @@
 package pl.drogaprogramisty.games;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.drogaprogramisty.games.dto.GameResultDto;
 import pl.drogaprogramisty.games.dto.RatingDto;
+import pl.drogaprogramisty.ratings.dto.GameResult;
 
 import java.util.List;
 
+@CrossOrigin(originPatterns = "*")
 @RestController
 @RequiredArgsConstructor
 class GamesController {
 
     private final GamesFacade gamesFacade;
 
-    @GetMapping("/games")
+    @GetMapping("/ratings")
     public List<RatingDto> getRatings() {
         return gamesFacade.getRatings();
     }
@@ -24,5 +23,10 @@ class GamesController {
     @PostMapping("/games")
     public void addGame(@RequestBody GameResultDto dto) {
         gamesFacade.addGame(dto);
+    }
+
+    @GetMapping("/games")
+    public List<GameResultDto> getGames() {
+        return gamesFacade.getGames().stream().map(GameResult::dto).toList();
     }
 }
