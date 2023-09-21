@@ -1,0 +1,39 @@
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  MAVEN_IMAGE: maven:3.8.5-openjdk-17
+
+cache:
+  paths:
+    - .m2/
+
+build-job:
+  stage: build
+  image: $MAVEN_IMAGE
+  script:
+    - echo "Compiling the code..."
+    - mvn clean install -DskipTests
+
+unit-test-job:
+  stage: test
+  image: $MAVEN_IMAGE
+  script:
+    - echo "running tests..."
+    - mvn test
+
+lint-test-job:
+  stage: test
+  script:
+    - echo "Linting code... This will take about 10 seconds."
+    - sleep 10
+    - echo "No lint issues found."
+
+deploy-job:
+  stage: deploy
+  environment: production
+  script:
+    - echo "Deploying application..."
+    - echo "Application successfully deployed."
